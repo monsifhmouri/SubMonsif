@@ -6,26 +6,26 @@ import (
 	"log"
 	"os"
 
-	"httpx.mrmonsif/core"
+	"SubMonsif/core"
 )
 
 var (
+	domain      = flag.String("d", "", "Target domain")
+	domainsFile = flag.String("dl", "", "File containing domains")
 	threads     = flag.Int("t", 100, "Threads")
 	timeout     = flag.Int("timeout", 10, "Timeout in seconds")
 	output      = flag.String("o", "", "Output file")
 	verbose     = flag.Bool("v", false, "Verbose mode")
-	techDetect  = flag.Bool("tech", true, "Technology detection")
-	securityScan= flag.Bool("security", true, "Security headers scan")
-	ports       = flag.String("p", "80,443,8080,8443", "Ports to scan")
-	followRedirects = flag.Bool("fr", true, "Follow redirects")
+	bruteforce  = flag.Bool("brute", true, "Enable bruteforce")
+	recursive   = flag.Bool("recursive", false, "Recursive subdomain discovery")
 )
 
 func banner() {
 	fmt.Println(`
 	╔══════════════════════════════════════════╗
-	║            httpx.mrmonsif                ║
-	║             HTTP SCANNER                 ║
-	║          Created by: MrMonsif            ║
+	║               SubMonsif                  ║
+	║            SUBDOMAIN ENGINE              ║
+	║           Created by: MrMonsif           ║
 	║     https://github.com/monsifhmouri      ║
 	╚══════════════════════════════════════════╝
 	`)
@@ -35,20 +35,34 @@ func main() {
 	flag.Parse()
 	banner()
 
-	scanner := &core.Scanner{
-		Threads:        *threads,
-		Timeout:        *timeout,
-		TechDetection:  *techDetect,
-		SecurityScan:   *securityScan,
-		Ports:          *ports,
-		FollowRedirects: *followRedirects,
+	if *domain == "" && *domainsFile == "" {
+		fmt.Println("Error: Please specify a domain or domains file")
+		fmt.Println("Usage: SubMonsif -d example.com")
+		fmt.Println("       SubMonsif -dl domains.txt")
+		os.Exit(1)
 	}
 
-	results, err := scanner.Scan(os.Stdin)
+	engine := &core.Engine{
+		Threads:    *threads,
+		Timeout:    *timeout,
+		Bruteforce: *bruteforce,
+		Recursive:  *recursive,
+		Verbose:    *verbose,
+	}
+
+	var results []string
+	var err error
+
+	if *domain != "" {
+		results, err = engine.Discover(*domain)
+	} else {
+		results, err = engine.DiscoverFromFile(*domainsFile)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Output results
-	core.Output(results, *output, *verbose)
+	core.SaveResults(results, *output)
+	fmt.Printf("\n[+] Found %d subdomains\n", len(results))
 }

@@ -1,86 +1,139 @@
+# SubMonsif - Subdomain Engine 🚀
 
-# httpx.mrmonsif 🕷️
+![banner](https://img.shields.io/badge/Subdomain--Finder-Made%20By%20MrMonsif-orange)
 
-![banner](https://img.shields.io/badge/HTTP--SCANNER-Made%20By%20MrMonsif-orange)  
-**Ultimate HTTP Security Scanner with Technology & WAF Detection**
+## Overview
 
-## 🔥 Overview
-
-`httpx.mrmonsif` is a fast and advanced HTTP scanner built with Go, focused on red team operations, bug bounty, reconnaissance, and WAF fingerprinting.
-
-- 🚀 Fast concurrent scanning
-- 🧠 Automatic technology detection (`X-Powered-By`, `Server`, etc.)
-- 🛡️ WAF detection (Cloudflare, Akamai, etc.)
-- 🎨 Colored output with filters
-- 💥 Detects suspicious behaviors (e.g., rate limits, blocked URLs)
+**SubMonsif** is a powerful and advanced subdomain enumeration tool written in Go. It supports active and passive subdomain discovery from multiple real sources and can use bruteforce with customizable wordlists.
+Ideal for bug bounty, penetration testing, and recon workflows.
 
 ---
 
-## 📦 Installation
+## Features
 
-### From Source (Go 1.19+ Required)
+* Fast, multi-threaded subdomain enumeration
+* Uses real public APIs: **crt.sh, HackerTarget, VirusTotal, OTX, Shodan**
+* Supports bruteforce discovery
+* Removes duplicate results automatically
+* Custom wordlist support
+* Works on **Linux** and **Windows**
+
+---
+
+## Installation
+
+### Requirements
+
+* [Go](https://go.dev/doc/install) 1.18+
+* Git (for cloning repo)
+
+### Build (Linux/MacOS)
 
 ```bash
-git clone https://github.com/yourusername/httpx.mrmonsif.git
-cd httpx.mrmonsif
-go build -o httpx.mrmonsif.exe main.go
+git clone https://github.com/monsifhmouri/SubMonsif.git
+cd SubMonsif
+go build -o SubMonsif main.go
+chmod +x SubMonsif
 ```
 
-### Download Binary (Windows Only)
+### Build (Windows)
 
-[📥 Click to Download httpx.mrmonsif.exe](https://github.com/yourusername/httpx.mrmonsif/releases/latest)
-
----
-
-## 🧪 Usage
-
-```bash
-cat targets.txt | httpx.mrmonsif.exe -t 50 -tech -security
-```
-
-### Flags
-
-| Flag       | Description                        |
-|------------|------------------------------------|
-| `-t`       | Threads count (default: 10)        |
-| `-tech`    | Enable technology detection        |
-| `-security`| Enable security header check       |
-| `-v`       | Enable verbose mode (more details) |
-
----
-
-## 📂 Example Output
-
-```bash
-[200] http://target.com [cloudflare] [Tech: WordPress, PHP] [Time: 212ms]
-[403] https://api.vuln.com [akamai] [Tech: []] [Time: 321ms]
+```cmd
+git clone https://github.com/monsifhmouri/SubMonsif.git
+cd SubMonsif
+go build -o SubMonsif.exe main.go
 ```
 
 ---
 
-## 🛠️ Structure
+## Usage
+
+### Linux
 
 ```bash
-├── core/
-│   ├── scanner.go       # Main scanner logic
-│   ├── output.go        # Output formatter
-│   └── headers.go       # Security header checks
-├── pkg/
-│   └── technologies/
-│       └── detector.go  # Tech detector
-├── main.go
-├── go.mod
-└── targets.txt
+./SubMonsif -d example.com -t 100 -brute -v
+./SubMonsif -dl domains.txt -t 200 -o results.txt
+```
+
+### Windows
+
+```cmd
+SubMonsif.exe -d example.com -t 100 -brute -v
+SubMonsif.exe -dl domains.txt -t 200 -o results.txt
+```
+
+### Options
+
+| Flag     | Description                     |
+| -------- | ------------------------------- |
+| `-d`     | Target domain (example.com)     |
+| `-dl`    | File with list of domains       |
+| `-t`     | Number of threads (default 100) |
+| `-brute` | Enable bruteforce mode          |
+| `-v`     | Verbose mode                    |
+| `-o`     | Output file for results         |
+
+---
+
+## Supported Passive Sources
+
+* [crt.sh](https://crt.sh/)
+* [HackerTarget](https://hackertarget.com/)
+* [VirusTotal](https://www.virustotal.com/)
+* [AlienVault OTX](https://otx.alienvault.com/)
+* [Shodan](https://www.shodan.io/)
+
+---
+
+## How to Get Your API Keys
+
+Some sources require free registration to use their APIs.
+You **must** put your API keys directly in the correct functions in `providers/passive.go`:
+
+| Source     | Register & Get Key                                                               | Where to put the key in code         |
+| ---------- | -------------------------------------------------------------------------------- | ------------------------------------ |
+| VirusTotal | [https://www.virustotal.com/gui/join-us](https://www.virustotal.com/gui/join-us) | Replace value in `getFromVirusTotal` |
+| OTX        | [https://otx.alienvault.com/api/](https://otx.alienvault.com/api/)               | Replace value in `getFromOTX`        |
+| Shodan     | [https://account.shodan.io/register](https://account.shodan.io/register)         | Replace value in `getFromShodan`     |
+
+**Edit `providers/passive.go`:**
+Replace the placeholder `apiKey := "............."` with your actual key in each relevant function:
+
+```go
+// Example:
+apiKey := "YOUR_VIRUSTOTAL_API_KEY"
+// and the same for OTX and Shodan
 ```
 
 ---
 
-## ✨ Author
+## Example (Output)
 
-**Created by [MrMonsif](https://github.com/mrmonsif)**
+```
+[Brute] Found: www.target.com
+[+] Found: api.target.com
+...
+[+] Found 5523 subdomains
+```
 
 ---
 
-## 📜 License
+## Credits
+
+* Author: [MrMonsif](https://github.com/monsifhmouri)
+* Inspired by subfinder and other recon tools
+
+---
+
+## Warning
+
+**Never commit or push your API keys to any public repository!**
+If you plan to share or publish your code on GitHub, remove or replace all API keys before pushing.
+
+---
+
+## License
 
 MIT License
+
+
