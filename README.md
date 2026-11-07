@@ -1,6 +1,9 @@
 # SubMonsif - Subdomain Engine................
 
 ![banner](https://img.shields.io/badge/Subdomain--Finder-Made%20By%20MrMonsif-orange)
+[![Telegram](https://img.shields.io/badge/Telegram-Contact-blue?style=flat-square&logo=telegram)](http://t.me/monstr_m1nd)
+[![Instagram](https://img.shields.io/badge/Instagram-Follow-purple?style=flat-square&logo=instagram)](https://www.instagram.com/httpx.mrmonsif/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/monsifhmouri/)
 
 ## Overview
 
