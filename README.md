@@ -6,11 +6,6 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/monsifhmouri/)
 
 ## Overview
-
-## 🎬 SubMonsif – Live Demo
-
-[![Watch SubMonsif Demo](https://placehold.co/900x500/101827/ffffff?text=PLAY+SUBMONSIF+DEMO)](https://rainbow-violet-o4bu1.ship.place/)
-
 **Live Demo:** [Launch SubMonsif](https://rainbow-violet-o4bu1.ship.place/)
 
 **SubMonsif** is a powerful and advanced subdomain enumeration tool written in Go. It supports active and passive subdomain discovery from multiple real sources and can use bruteforce with customizable wordlists.
